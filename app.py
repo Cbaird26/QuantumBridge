@@ -7,9 +7,13 @@ import pennylane as qml
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import openai
+import os
 
-# OpenAI API key setup
-openai.api_key = 'sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm'
+# Get OpenAI API key from environment variables
+openai.api_key = os.getenv('OPENAI_API_KEY')
+if openai.api_key is None:
+    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
+    sys.exit(1)
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -31,12 +35,14 @@ def optimize_params(model, X, y):
     return optimized_params
 
 def chat_with_gpt(prompt):
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=150
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ]
     )
-    return response.choices[0].text.strip()
+    return response.choices[0].message['content'].strip()
 
 # Streamlit app
 st.title("QuantumBridge: AI-Powered Quantum Supercomputer with ChatGPT")
@@ -73,4 +79,3 @@ if st.button("Ask GPT-3"):
         st.write("ChatGPT Response:", gpt_response)
     else:
         st.write("Please enter a question for GPT-3.")
-
