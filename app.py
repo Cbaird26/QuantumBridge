@@ -1,9 +1,11 @@
 import streamlit as st
+import sys
 from qiskit import QuantumCircuit, transpile, assemble
 from qiskit.visualization import plot_histogram
-from qiskit.providers.aer import Aer  # Correct import for Aer
+from qiskit.providers.aer import Aer
 import pennylane as qml
 import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -19,8 +21,13 @@ def run_quantum_circuit(params):
     result = circuit(params)
     return result
 
+def optimize_params(model, X, y):
+    model.fit(X, y)
+    optimized_params = model.predict([[1, 2]])  # Example input, adjust as needed
+    return optimized_params
+
 # Streamlit app
-st.title("QuantumBridge: Quantum Supercomputer with AI in Unity Consciousness")
+st.title("QuantumBridge: AI-Powered Quantum Supercomputer")
 st.write("This app demonstrates quantum computations with AI integration.")
 
 param_0 = st.slider("RX rotation (radians)", 0.0, 2*np.pi, 0.0)
@@ -36,3 +43,11 @@ qc.rx(param_0, 0)
 qc.ry(param_1, 1)
 qc.cx(0, 1)
 st.write(qc.draw())
+
+# Add AI optimization
+st.header("AI Optimization")
+model = RandomForestRegressor()
+X = np.random.rand(100, 2)  # Example feature data, adjust as needed
+y = np.random.rand(100)     # Example target data, adjust as needed
+optimized_params = optimize_params(model, X, y)
+st.write("Optimized Parameters:", optimized_params)
