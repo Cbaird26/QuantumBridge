@@ -1,44 +1,102 @@
 import streamlit as st
-import qiskit
-import pandas as pd
 import numpy as np
+import pandas as pd
 
-st.title("QuantumBridge")
+def try_import_qiskit():
+    try:
+        import qiskit
+        return qiskit
+    except ImportError as e:
+        st.warning("Qiskit not available.")
+        return None
 
-st.write("""
-## Welcome to QuantumBridge
-This is a simple demonstration of a Streamlit app with Qiskit integration.
-""")
+def try_import_cirq():
+    try:
+        import cirq
+        return cirq
+    except ImportError as e:
+        st.warning("Cirq not available.")
+        return None
 
-# Example of a simple Qiskit circuit
-st.write("### Quantum Circuit Example")
-qr = qiskit.QuantumRegister(2)
-cr = qiskit.ClassicalRegister(2)
-circuit = qiskit.QuantumCircuit(qr, cr)
+def try_import_pyquil():
+    try:
+        import pyquil
+        from pyquil import Program
+        return pyquil, Program
+    except ImportError as e:
+        st.warning("PyQuil not available.")
+        return None, None
 
-circuit.h(qr[0])
-circuit.cx(qr[0], qr[1])
-circuit.measure(qr, cr)
+def try_import_pennylane():
+    try:
+        import pennylane as qml
+        return qml
+    except ImportError as e:
+        st.warning("PennyLane not available.")
+        return None
 
-st.text(circuit.draw())
+st.title("Quantum Computing with Multiple Libraries")
 
-st.write("### Simulating the circuit")
+qiskit = try_import_qiskit()
+cirq = try_import_cirq()
+pyquil, Program = try_import_pyquil()
+qml = try_import_pennylane()
 
-backend = qiskit.Aer.get_backend('qasm_simulator')
-result = qiskit.execute(circuit, backend).result()
-counts = result.get_counts(circuit)
+if qiskit:
+    st.write("Using Qiskit for quantum computing.")
+    # Qiskit example code
+    from qiskit import QuantumCircuit, transpile, Aer, execute
 
-st.write(f"Counts: {counts}")
+    qc = QuantumCircuit(2)
+    qc.h(0)
+    qc.cx(0, 1)
+    qc.measure_all()
 
-# Example DataFrame
-st.write("### Example DataFrame")
-data = {
-    'Column 1': np.random.randn(10),
-    'Column 2': np.random.randn(10)
-}
-df = pd.DataFrame(data)
+    simulator = Aer.get_backend('qasm_simulator')
+    result = execute(qc, simulator).result()
+    counts = result.get_counts()
 
-st.dataframe(df)
+    st.write("Qiskit Result:", counts)
 
-st.write("### Example Chart")
-st.line_chart(df)
+elif cirq:
+    st.write("Using Cirq for quantum computing.")
+    # Cirq example code
+    qubit = cirq.GridQubit(0, 0)
+    circuit = cirq.Circuit(
+        cirq.H(qubit),
+        cirq.measure(qubit, key='m')
+    )
+
+    simulator = cirq.Simulator()
+    result = simulator.run(circuit, repetitions=100)
+    counts = result.histogram(key='m')
+
+    st.write("Cirq Result:", counts)
+
+elif pyquil and Program:
+    st.write("Using PyQuil for quantum computing.")
+    # PyQuil example code
+    program = Program('H 0', 'CNOT 0 1', 'MEASURE 0 0', 'MEASURE 1 1')
+    from pyquil.api import get_qc
+    qc = get_qc('2q-qvm')
+    result = qc.run_and_measure(program, trials=10)
+
+    st.write("PyQuil Result:", result)
+
+elif qml:
+    st.write("Using PennyLane for quantum computing.")
+    # PennyLane example code
+    dev = qml.device('default.qubit', wires=2)
+
+    @qml.qnode(dev)
+    def circuit():
+        qml.Hadamard(wires=0)
+        qml.CNOT(wires=[0, 1])
+        return qml.probs(wires=[0, 1])
+
+    result = circuit()
+
+    st.write("PennyLane Result:", result)
+
+else:
+    st.error("No quantum computing library available.")
