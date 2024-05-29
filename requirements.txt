@@ -1,7 +1,7 @@
 streamlit==1.18.1
 altair==4.2.2
 click==8.0.0
-qiskit==0.39.0
+qiskit==0.38.0  # Use an older version that might not have the tweedledum dependency
 cirq==0.15.0
 pennylane==0.30.0
 projectq==0.7.1
