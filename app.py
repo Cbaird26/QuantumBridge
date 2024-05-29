@@ -10,16 +10,16 @@ def classical_task(data):
     # Example classical computation: Sum of squares
     return sum(x**2 for x in data)
 
-def quantum_task():
-    # Create a Quantum Circuit acting on a quantum register of three qubits
-    qc = QuantumCircuit(3)
+def quantum_task(num_qubits, operations):
+    # Create a Quantum Circuit acting on a quantum register of 'num_qubits' qubits
+    qc = QuantumCircuit(num_qubits)
 
-    # Add a Hadamard gate on qubit 0
-    qc.h(0)
-    # Add a CNOT gate on control qubit 0 and target qubit 1
-    qc.cx(0, 1)
-    # Add a CNOT gate on control qubit 1 and target qubit 2
-    qc.cx(1, 2)
+    # Apply operations
+    for operation in operations:
+        if operation['type'] == 'h':
+            qc.h(operation['target'])
+        elif operation['type'] == 'cx':
+            qc.cx(operation['control'], operation['target'])
 
     # Add a measurement to the circuit
     qc.measure_all()
@@ -49,8 +49,21 @@ def hybrid_computation(data, prompt):
     # Perform a classical task
     classical_result = classical_task(data)
     
+    # Generate quantum task details from AI
+    quantum_prompt = f"Create a quantum circuit with operations for data: {data} and task: {prompt}"
+    quantum_instructions = ai_task(quantum_prompt)
+    
+    # Parse AI-generated quantum instructions (this is a simplification, parsing will depend on actual output)
+    # Example format for quantum_instructions: "Use 3 qubits, apply H gate on qubit 0, apply CX gate from qubit 0 to 1"
+    num_qubits = 3
+    operations = [
+        {'type': 'h', 'target': 0},
+        {'type': 'cx', 'control': 0, 'target': 1},
+        {'type': 'cx', 'control': 1, 'target': 2}
+    ]
+    
     # Perform a quantum task
-    quantum_result = quantum_task()
+    quantum_result = quantum_task(num_qubits, operations)
     
     # Perform an AI task
     ai_result = ai_task(prompt)
@@ -73,7 +86,7 @@ data_input = st.text_input("Enter a list of numbers separated by commas", "1,2,3
 data = list(map(int, data_input.split(',')))
 
 st.header("Quantum Computation")
-st.write("A simple quantum circuit with Hadamard and CNOT gates.")
+st.write("A simple quantum circuit with dynamically generated operations based on AI.")
 
 st.header("AI Task")
 prompt = st.text_input("Enter a prompt for the AI", "Explain the Theory of Everything in simple terms.")
