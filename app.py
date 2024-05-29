@@ -1,6 +1,4 @@
-pip uninstall openai
 pip install openai
-
 import streamlit as st
 import sys
 from qiskit import QuantumCircuit, transpile, assemble
