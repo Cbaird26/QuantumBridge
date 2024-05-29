@@ -9,7 +9,10 @@ from sklearn.ensemble import RandomForestRegressor
 import openai
 
 # Set the OpenAI API key directly
-openai.api_key = 'sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm'
+openai.api_key = 'sk-proj-gvG14NmjOXbfcSmwRVveT3BlbkFJaCfQrTfXGvbvJ8OfnwEt'
+
+# Verify OpenAI library version
+st.write(f"OpenAI Library Version: {openai.__version__}")
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -38,7 +41,7 @@ def chat_with_gpt(prompt):
             {"role": "user", "content": prompt}
         ]
     )
-    return response.choices[0].message['content'].strip()
+    return response.choices[0].message['content']
 
 # Streamlit app
 st.title("QuantumBridge: AI-Powered Quantum Supercomputer with ChatGPT")
