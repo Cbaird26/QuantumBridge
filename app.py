@@ -6,7 +6,7 @@ from openai import OpenAI
 import os
 
 # Set up OpenAI API key
-api_key = "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"
+api_key = "YOUR_CORRECT_API_KEY_HERE"  # Replace this with the correct API key
 client = OpenAI(api_key=api_key)
 
 # Initialize Quantum Device
