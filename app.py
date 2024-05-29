@@ -1,13 +1,7 @@
 import streamlit as st
-import sys
 from qiskit import QuantumCircuit, transpile, assemble
 from qiskit.visualization import plot_histogram
-try:
-    from qiskit.providers.aer import Aer
-except ImportError as e:
-    st.write(f"Error importing Aer: {e}")
-    st.write(f"sys.path: {sys.path}")
-    st.write(f"qiskit location: {sys.modules.get('qiskit')}")
+from qiskit.providers.aer import Aer  # Correct import for Aer
 import pennylane as qml
 import numpy as np
 
