@@ -7,13 +7,9 @@ import pennylane as qml
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import openai
-import os
 
-# Get OpenAI API key from environment variables
-openai.api_key = os.getenv('sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm')
-if openai.api_key is None:
-    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
-    sys.exit(1)
+# Directly set the OpenAI API key
+openai.api_key = 'sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm'
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
