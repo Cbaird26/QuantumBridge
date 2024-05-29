@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import openai
 
-# Directly set the OpenAI API key
+# Set the OpenAI API key directly
 openai.api_key = 'sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm'
 
 # Initialize Quantum Device
