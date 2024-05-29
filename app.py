@@ -1,3 +1,6 @@
+pip uninstall openai
+pip install openai
+
 import streamlit as st
 import sys
 from qiskit import QuantumCircuit, transpile, assemble
@@ -78,3 +81,4 @@ if st.button("Ask GPT-3"):
         st.write("ChatGPT Response:", gpt_response)
     else:
         st.write("Please enter a question for GPT-3.")
+
