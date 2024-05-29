@@ -9,7 +9,7 @@ from sklearn.ensemble import RandomForestRegressor
 import openai
 
 # OpenAI API key setup
-openai.api_key = 'YOUR_OPENAI_API_KEY'
+openai.api_key = 'sk-proj-JlrVuwpziOhjh40hBxk6T3BlbkFJUqBqP1EexWQBJRXlYWRm'
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
