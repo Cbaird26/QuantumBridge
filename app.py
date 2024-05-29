@@ -31,14 +31,12 @@ def optimize_params(model, X, y):
     return optimized_params
 
 def chat_with_gpt(prompt):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ]
+    response = openai.Completion.create(
+        engine="gpt-3.5-turbo",
+        prompt=prompt,
+        max_tokens=150
     )
-    return response.choices[0].message['content'].strip()
+    return response.choices[0].text.strip()
 
 # Streamlit app
 st.title("QuantumBridge: AI-Powered Quantum Supercomputer with ChatGPT")
