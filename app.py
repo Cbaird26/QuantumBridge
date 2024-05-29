@@ -6,7 +6,6 @@ libraries = {
     "Qiskit": "qiskit",
     "Cirq": "cirq",
     "Pennylane": "pennylane",
-    "Braket": "braket",
     "ProjectQ": "projectq",
     "PyQuil": "pyquil"
 }
