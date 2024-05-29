@@ -7,10 +7,10 @@ pandas
 scipy
 numpy
 qutip
-qiskit
 transformers
 pdfplumber
 python-docx
 Pillow
+qiskit==0.33.1
 
 
