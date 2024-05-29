@@ -7,7 +7,7 @@ import os
 
 # Set up OpenAI API key
 api_key = "YOUR_CORRECT_API_KEY_HERE"  # Replace this with the correct API key
-client = OpenAI(api_key=api_key)
+client = OpenAI(api_key=sk-proj-UJYGzw4N2bpofXQBgjzxT3BlbkFJas5lBlQTAVq48FQNAPlo)
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
