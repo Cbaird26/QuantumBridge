@@ -1,6 +1,7 @@
 import streamlit as st
-from qiskit import QuantumCircuit, Aer, transpile, assemble
+from qiskit import QuantumCircuit, transpile, assemble
 from qiskit.visualization import plot_histogram
+from qiskit.providers.aer import Aer  # Correct import for Aer
 import pennylane as qml
 import numpy as np
 
