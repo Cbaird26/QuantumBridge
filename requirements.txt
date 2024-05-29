@@ -7,4 +7,9 @@ pandas
 scipy
 numpy
 qutip
+qiskit
+transformers
+pdfplumber
+python-docx
+Pillow
 
