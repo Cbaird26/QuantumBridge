@@ -11,3 +11,4 @@ Pillow
 numpy
 scipy
 Cython
+tweedledum==1.1.0  # Specify a version known to work
