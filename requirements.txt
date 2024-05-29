@@ -1,8 +1,1 @@
 streamlit==1.18.1
-qiskit==0.39.0
-cirq==0.15.0
-pennylane==0.30.0
-amazon-braket-sdk==1.33.2
-projectq==0.7.1
-pyquil==3.0.0
-matplotlib
