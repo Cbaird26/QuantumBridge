@@ -2,10 +2,12 @@ import streamlit as st
 import pennylane as qml
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-import openai
+from openai import OpenAI
+import os
 
 # Set up OpenAI API key
-openai.api_key = "[REDACTED_OPENAI_API_KEY]"
+api_key = "[REDACTED_OPENAI_API_KEY]"
+client = OpenAI(api_key=api_key)
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -27,12 +29,12 @@ def optimize_circuit(params):
     return params
 
 def chat_with_gpt(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=150
     )
-    return response.choices[0].message['content']
+    return response.choices[0].text
 
 st.title("QuantumBridge")
 
