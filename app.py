@@ -1,9 +1,10 @@
 import streamlit as st
 import pennylane as qml
-from huggingtree import HuggingTree
+from transformers import pipeline
 
-# Initialize HuggingTree
-tree = HuggingTree(model_name='gpt2')
+# Initialize Hugging Face pipeline
+model_name = "gpt2"  # You can replace this with another model if needed
+generator = pipeline("text-generation", model=model_name)
 
 # Define a simple quantum function using PennyLane
 dev = qml.device("default.qubit", wires=2)
@@ -16,8 +17,8 @@ def quantum_function(theta):
     return qml.probs(wires=[0, 1])
 
 # Streamlit app
-st.title('Quantum Super Computer with HuggingTree')
-st.write("Generate text using HuggingTree's GPT-2 model integrated with quantum computing")
+st.title('Quantum Super Computer with Hugging Face')
+st.write("Generate text using Hugging Face's GPT-2 model integrated with quantum computing")
 
 # Quantum parameters
 theta = [st.slider("Theta 0", 0.0, 3.14, 0.1), st.slider("Theta 1", 0.0, 3.14, 0.1)]
@@ -33,9 +34,9 @@ user_input = st.text_input("Enter a prompt:", "")
 if st.button("Generate"):
     if user_input:
         with st.spinner("Generating text..."):
-            generated_text = tree.generate(user_input, max_length=100)
+            generated_text = generator(user_input, max_length=100)
             st.write("Generated Text:")
-            st.write(generated_text)
+            st.write(generated_text[0]['generated_text'])
     else:
         st.write("Please enter a prompt to generate text.")
 
