@@ -1,5 +1,11 @@
 import streamlit as st
-from qiskit import QuantumCircuit, Aer, transpile, assemble, execute
+
+# Attempt to import Qiskit and handle import errors gracefully
+try:
+    from qiskit import QuantumCircuit, Aer, transpile, assemble, execute
+except ImportError as e:
+    st.error(f"Error importing Qiskit: {e}")
+
 from transformers import pipeline, set_seed
 import pandas as pd
 import pdfplumber
@@ -150,4 +156,3 @@ if st.button("Run Computation"):
     st.write("Classical Result:", result["classical_result"])
     st.write("Quantum Result:", result["quantum_result"])
     st.write("AI Result:", result["ai_result"])
-
