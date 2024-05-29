@@ -1,70 +1,44 @@
 import streamlit as st
 import qiskit
-from qiskit import IBMQ, Aer, transpile, assemble
-from qiskit.visualization import plot_histogram
-import pennylane as qml
-from pennylane import numpy as np
-import transformers
 import pandas as pd
-import pdfplumber
-from PIL import Image
-import scipy
-from scipy import optimize
+import numpy as np
 
 st.title("QuantumBridge")
 
-# Quantum Computing Section
-st.header("Quantum Computing with Qiskit")
-st.write("This section uses Qiskit for quantum computing simulations.")
+st.write("""
+## Welcome to QuantumBridge
+This is a simple demonstration of a Streamlit app with Qiskit integration.
+""")
 
-# Qiskit Example: Quantum Circuit
-st.subheader("Qiskit Example")
-backend = Aer.get_backend('qasm_simulator')
-qc = qiskit.QuantumCircuit(2)
-qc.h(0)
-qc.cx(0, 1)
-qc.measure_all()
+# Example of a simple Qiskit circuit
+st.write("### Quantum Circuit Example")
+qr = qiskit.QuantumRegister(2)
+cr = qiskit.ClassicalRegister(2)
+circuit = qiskit.QuantumCircuit(qr, cr)
 
-qobj = assemble(transpile(qc, backend=backend))
-result = backend.run(qobj).result()
-counts = result.get_counts()
+circuit.h(qr[0])
+circuit.cx(qr[0], qr[1])
+circuit.measure(qr, cr)
 
-st.write("Quantum Circuit:")
-st.plotly_chart(plot_histogram(counts))
+st.text(circuit.draw())
 
-# Quantum Machine Learning Section
-st.header("Quantum Machine Learning with Pennylane")
-st.write("This section uses Pennylane for quantum machine learning.")
+st.write("### Simulating the circuit")
 
-# Pennylane Example: Simple Quantum Node
-dev = qml.device('default.qubit', wires=2)
+backend = qiskit.Aer.get_backend('qasm_simulator')
+result = qiskit.execute(circuit, backend).result()
+counts = result.get_counts(circuit)
 
-@qml.qnode(dev)
-def circuit(params):
-    qml.RX(params[0], wires=0)
-    qml.RY(params[1], wires=1)
-    qml.CNOT(wires=[0, 1])
-    return qml.expval(qml.PauliZ(0)), qml.expval(qml.PauliZ(1))
+st.write(f"Counts: {counts}")
 
-params = np.array([0.54, 0.12])
-result = circuit(params)
-
-st.write("Pennylane Quantum Node Result:")
-st.write(result)
-
-# Data Processing Section
-st.header("Data Processing")
-st.write("This section includes data processing examples using pandas, pdfplumber, and other libraries.")
-
-# Example: Load a PDF and Display Text
-pdf_path = st.text_input("Enter the path to a PDF file", "example.pdf")
-if pdf_path:
-    with pdfplumber.open(pdf_path) as pdf:
-        first_page = pdf.pages[0]
-        st.write(first_page.extract_text())
-
-# Example: Display a DataFrame
-data = {'Column 1': [1, 2, 3], 'Column 2': [4, 5, 6]}
+# Example DataFrame
+st.write("### Example DataFrame")
+data = {
+    'Column 1': np.random.randn(10),
+    'Column 2': np.random.randn(10)
+}
 df = pd.DataFrame(data)
-st.write("Sample DataFrame:")
-st.write(df)
+
+st.dataframe(df)
+
+st.write("### Example Chart")
+st.line_chart(df)
