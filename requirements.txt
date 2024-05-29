@@ -1,14 +1,4 @@
 streamlit==1.35.0
 qiskit==0.39.0
-qiskit-terra==0.22.0
-qiskit-aer==0.11.0
-qiskit-ibmq-provider==0.19.2
-transformers==4.41.1
 pandas==2.2.2
-pdfplumber==0.11.0
-python-docx==1.1.2
-Pillow==10.3.0
 numpy==1.23.5
-scipy==1.13.1
-Cython==3.0.10
-pennylane==0.30.0
