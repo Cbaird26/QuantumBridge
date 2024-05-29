@@ -8,7 +8,7 @@ pandas==2.2.2
 pdfplumber==0.11.0
 python-docx==1.1.2
 Pillow==10.3.0
-numpy<1.24  # Ensure numpy version is compatible with pennylane
+numpy==1.23.5
 scipy==1.13.1
 Cython==3.0.10
 pennylane==0.30.0
