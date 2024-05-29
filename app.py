@@ -6,13 +6,15 @@ from qiskit.providers.aer import Aer
 import pennylane as qml
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-import openai
+from openai import OpenAI
 
-# Set the OpenAI API key directly
-openai.api_key = 'sk-proj-gvG14NmjOXbfcSmwRVveT3BlbkFJaCfQrTfXGvbvJ8OfnwEt'
+# Set your OpenAI API key directly
+API_KEY = "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"
 
-# Verify OpenAI library version
-st.write(f"OpenAI Library Version: {openai.__version__}")
+# Initialize OpenAI client
+client = OpenAI(
+    api_key=API_KEY
+)
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -34,43 +36,42 @@ def optimize_params(model, X, y):
     return optimized_params
 
 def chat_with_gpt(prompt):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+    chat_completion = client.chat.completions.create(
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ]
+            {
+                "role": "user",
+                "content": prompt,
+            }
+        ],
+        model="gpt-3.5-turbo",
     )
-    return response.choices[0].message['content'].strip()
+    return chat_completion.choices[0].message['content'].strip()
 
 # Streamlit app
 st.title("QuantumBridge: AI-Powered Quantum Supercomputer with ChatGPT")
 st.write("This app demonstrates quantum computations with AI and ChatGPT integration.")
 
-param_0 = st.slider("RX rotation (radians)", 0.0, 2*np.pi, 0.0)
-param_1 = st.slider("RY rotation (radians)", 0.0, 2*np.pi, 0.0)
+param_0 = st.slider("RX rotation (radians)", 0.0, 6.28, 0.0)
+param_1 = st.slider("RY rotation (radians)", 0.0, 6.28, 0.0)
 
-if st.button("Run Quantum Circuit"):
-    result = run_quantum_circuit([param_0, param_1])
-    st.write("Quantum Circuit Result:", result)
-
-# Visualize Quantum Circuit
 qc = QuantumCircuit(2)
 qc.rx(param_0, 0)
 qc.ry(param_1, 1)
 qc.cx(0, 1)
+backend = Aer.get_backend("qasm_simulator")
+qc_transpiled = transpile(qc, backend)
+qobj = assemble(qc_transpiled)
+job = backend.run(qobj)
+result = job.result()
+counts = result.get_counts()
+
+st.write("Quantum Circuit:")
 st.write(qc.draw())
 
-# Add AI optimization
-st.header("AI Optimization")
-model = RandomForestRegressor()
-X = np.random.rand(100, 2)  # Example feature data, adjust as needed
-y = np.random.rand(100)     # Example target data, adjust as needed
-optimized_params = optimize_params(model, X, y)
-st.write("Optimized Parameters:", optimized_params)
+st.write("Results:")
+st.write(counts)
+st.bar_chart([counts.get('00', 0), counts.get('01', 0), counts.get('10', 0), counts.get('11', 0)])
 
-# ChatGPT Integration
-st.header("Chat with GPT-3")
 user_input = st.text_input("Ask GPT-3 a question about quantum computing or AI:")
 if st.button("Ask GPT-3"):
     if user_input:
