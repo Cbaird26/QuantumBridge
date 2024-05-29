@@ -1,11 +1,44 @@
 import streamlit as st
+import qiskit
+from qiskit import IBMQ, Aer, transpile, assemble
+from qiskit.visualization import plot_histogram
 import pennylane as qml
 from pennylane import numpy as np
+import transformers
+import pandas as pd
+import pdfplumber
+from PIL import Image
+import scipy
+from scipy import optimize
 
-# Create a quantum device
+st.title("QuantumBridge")
+
+# Quantum Computing Section
+st.header("Quantum Computing with Qiskit")
+st.write("This section uses Qiskit for quantum computing simulations.")
+
+# Qiskit Example: Quantum Circuit
+st.subheader("Qiskit Example")
+backend = Aer.get_backend('qasm_simulator')
+qc = qiskit.QuantumCircuit(2)
+qc.h(0)
+qc.cx(0, 1)
+qc.measure_all()
+
+qobj = assemble(transpile(qc, backend=backend))
+result = backend.run(qobj).result()
+counts = result.get_counts()
+
+st.write("Quantum Circuit:")
+st.plotly_chart(plot_histogram(counts))
+
+# Quantum Machine Learning Section
+st.header("Quantum Machine Learning with Pennylane")
+st.write("This section uses Pennylane for quantum machine learning.")
+
+# Pennylane Example: Simple Quantum Node
 dev = qml.device('default.qubit', wires=2)
 
-# Define a quantum node
 @qml.qnode(dev)
 def circuit(params):
     qml.RX(params[0], wires=0)
@@ -13,22 +46,25 @@ def circuit(params):
     qml.CNOT(wires=[0, 1])
     return qml.expval(qml.PauliZ(0)), qml.expval(qml.PauliZ(1))
 
-# Define the parameters
-params = np.array([0.543, 0.123], requires_grad=True)
-
-# Execute the quantum circuit
+params = np.array([0.54, 0.12])
 result = circuit(params)
 
-# Streamlit app
-st.title("Quantum Circuit Simulation with PennyLane")
-st.write("Quantum Circuit Results:")
-st.write(f"PauliZ expectation values: {result}")
+st.write("Pennylane Quantum Node Result:")
+st.write(result)
 
-# Allow user to change the parameters
-param1 = st.slider("RX Parameter", min_value=0.0, max_value=2*np.pi, value=params[0])
-param2 = st.slider("RY Parameter", min_value=0.0, max_value=2*np.pi, value=params[1])
+# Data Processing Section
+st.header("Data Processing")
+st.write("This section includes data processing examples using pandas, pdfplumber, and other libraries.")
 
-# Recompute the result with new parameters
-new_params = np.array([param1, param2], requires_grad=True)
-new_result = circuit(new_params)
-st.write(f"New PauliZ expectation values: {new_result}")
+# Example: Load a PDF and Display Text
+pdf_path = st.text_input("Enter the path to a PDF file", "example.pdf")
+if pdf_path:
+    with pdfplumber.open(pdf_path) as pdf:
+        first_page = pdf.pages[0]
+        st.write(first_page.extract_text())
+
+# Example: Display a DataFrame
+data = {'Column 1': [1, 2, 3], 'Column 2': [4, 5, 6]}
+df = pd.DataFrame(data)
+st.write("Sample DataFrame:")
+st.write(df)
