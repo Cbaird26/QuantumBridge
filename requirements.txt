@@ -1,5 +1,8 @@
 streamlit
 qiskit==0.39.0
+qiskit-terra==0.21.0
+qiskit-aer==0.10.0
+qiskit-ibmq-provider==0.18.0
 transformers
 pandas
 pdfplumber
