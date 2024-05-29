@@ -72,7 +72,4 @@ st.header("Chat with GPT-3")
 user_input = st.text_input("Ask GPT-3 a question about quantum computing or AI:")
 if st.button("Ask GPT-3"):
     if user_input:
-        gpt_response = chat_with_gpt(user_input)
-        st.write("ChatGPT Response:", gpt_response)
-    else:
-        st.write("Please enter a question for GPT-3.")
+        gpt_resp
