@@ -1,6 +1,13 @@
 import streamlit as st
 from qiskit import QuantumCircuit, Aer, transpile, assemble, execute
 from transformers import pipeline, set_seed
+import pandas as pd
+import pdfplumber
+from docx import Document
+from PIL import Image
+import io
+import numpy as np
+import scipy
 
 # Set up a local AI model
 set_seed(42)
@@ -44,6 +51,41 @@ def ai_task(prompt):
     # Use the local AI model to generate a response
     local_response = local_ai(prompt, max_length=150, num_return_sequences=1)
     return local_response[0]['generated_text']
+
+def read_csv(file):
+    data = pd.read_csv(file)
+    return data.to_string()
+
+def read_pdf(file):
+    with pdfplumber.open(file) as pdf:
+        pages = [page.extract_text() for page in pdf.pages]
+        return "\n\n".join(pages)
+
+def read_docx(file):
+    doc = Document(file)
+    return "\n\n".join([para.text for para in doc.paragraphs])
+
+def read_image(file):
+    img = Image.open(file)
+    return "This is an image file."
+
+def interpret_file(file):
+    file_type = file.type
+    if file_type == "text/csv":
+        content = read_csv(file)
+    elif file_type == "application/pdf":
+        content = read_pdf(file)
+    elif file_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        content = read_docx(file)
+    elif file_type.startswith("image/"):
+        content = read_image(file)
+    else:
+        content = "Unsupported file type."
+    return content
+
+def interpret_content(content):
+    prompt = f"Interpret the following content:\n\n{content}"
+    return ai_task(prompt)
 
 def hybrid_computation(data, prompt):
     # Perform a classical task
@@ -90,6 +132,17 @@ st.write("A simple quantum circuit with dynamically generated operations based o
 
 st.header("AI Task")
 prompt = st.text_input("Enter a prompt for the AI", "Explain the Theory of Everything in simple terms.")
+
+# File uploader
+uploaded_file = st.file_uploader("Upload a file", type=["csv", "pdf", "docx", "jpg", "jpeg", "png"])
+
+if uploaded_file is not None:
+    file_content = interpret_file(uploaded_file)
+    st.write("Uploaded File Content:")
+    st.write(file_content)
+    interpreted_content = interpret_content(file_content)
+    st.write("AI Interpretation:")
+    st.write(interpreted_content)
 
 if st.button("Run Computation"):
     result = hybrid_computation(data, prompt)
