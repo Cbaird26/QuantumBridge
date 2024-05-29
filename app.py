@@ -2,10 +2,10 @@ import streamlit as st
 import pennylane as qml
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from transformers import pipeline
+import openai
 
-# Initialize the Hugging Face pipeline for text generation
-generator = pipeline("text-generation", model="gpt2")
+# Set up OpenAI API key
+openai.api_key = "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"
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
@@ -26,9 +26,13 @@ def optimize_circuit(params):
         params = opt.step(circuit, params)
     return params
 
-def chat_with_transformer(prompt):
-    response = generator(prompt, max_length=100, num_return_sequences=1)
-    return response[0]['generated_text']
+def chat_with_gpt(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=150
+    )
+    return response.choices[0].message['content']
 
 st.title("QuantumBridge")
 
@@ -41,11 +45,11 @@ optimized_params = optimize_circuit(params)
 st.write("Optimized parameters:", optimized_params)
 
 # AI Chat Section
-st.header("Chat with Transformer AI")
+st.header("Chat with GPT AI")
 user_input = st.text_input("Ask the AI a question about quantum computing:")
 if st.button("Ask AI"):
     if user_input:
-        ai_response = chat_with_transformer(user_input)
+        ai_response = chat_with_gpt(user_input)
         st.write("AI Response:", ai_response)
     else:
         st.write("Please enter a question for the AI.")
