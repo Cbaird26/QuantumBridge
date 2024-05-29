@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestRegressor
 from transformers import pipeline
 
 # Initialize the Hugging Face pipeline for text generation
-generator = pipeline("text-generation", model="distilgpt2")
+generator = pipeline("text-generation", model="EleutherAI/gpt-neo-125M")
 
 # Initialize Quantum Device
 dev = qml.device("default.qubit", wires=2)
