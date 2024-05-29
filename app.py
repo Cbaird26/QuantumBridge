@@ -6,7 +6,7 @@ from openai import OpenAI
 import os
 
 # Set up OpenAI API key
-api_key = "[REDACTED_OPENAI_API_KEY]"  # Replace this with the correct API key
+api_key = "[REDACTED_OPENAI_API_KEY]"  # Ensure this is the correct and full API key
 client = OpenAI(api_key=api_key)
 
 # Initialize Quantum Device
@@ -34,7 +34,7 @@ def chat_with_gpt(prompt):
         messages=[{"role": "user", "content": prompt}],
         max_tokens=150
     )
-    return response.choices[0].text
+    return response.choices[0].message['content']
 
 st.title("QuantumBridge")
 
