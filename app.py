@@ -2,7 +2,7 @@
 import streamlit as st
 import qiskit
 from qiskit import Aer, transpile, assemble
-from qiskit.visualization import plot_histogram
+from qiskit.visualization import plot_histogram, matplotlib
 import pennylane as qml
 import tensorflow as tf
 import torch
@@ -52,7 +52,7 @@ def chatbot_response(question, context):
     response = {
         "quantum_result": quantum_result,
         "nlp_answer": answer['answer'],
-        "circuit": circuit.draw(output='mpl')
+        "circuit": circuit
     }
     return response
 
@@ -68,7 +68,7 @@ def main():
         response = chatbot_response(question, context)
         st.write("### Quantum Computation Result:")
         st.write(response["quantum_result"])
-        st.pyplot(response["circuit"])
+        st.pyplot(response["circuit"].draw(output='mpl'))
         
         st.write("### NLP Model Answer:")
         st.write(response["nlp_answer"])
