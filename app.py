@@ -75,3 +75,8 @@ def main():
     
     query = st.text_input("Enter search query for Google API:")
     if query:
+        st.write("## Google API Custom Search Result:")
+        st.write(google_api_example(query))
+
+if __name__ == "__main__":
+    main()
