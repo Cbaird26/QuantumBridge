@@ -1,17 +1,3 @@
-# Ensure compatibility and handle package installations
-!pip install qiskit==0.41.0
-!pip install qiskit-ibmq-provider
-!pip install pennylane==0.36.0
-!pip install streamlit==1.35.0
-!pip install tensorflow
-!pip install torch
-!pip install scikit-learn==1.5.0
-!pip install numpy==1.23.5
-!pip install pandas==2.2.2
-!pip install matplotlib==3.9.0
-!pip install transformers
-!pip install google-api-python-client
-
 # Necessary imports for running the environment
 import qiskit
 from qiskit import IBMQ
