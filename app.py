@@ -1,16 +1,69 @@
 # Necessary imports for running the environment
-import qiskit
-from qiskit import IBMQ
-import pennylane as qml
 import streamlit as st
-import tensorflow as tf
-import torch
-from sklearn import datasets
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from transformers import pipeline
-from googleapiclient.discovery import build
+
+# Debugging information
+st.write("Importing libraries...")
+
+try:
+    import qiskit
+    from qiskit import IBMQ
+    st.write("Qiskit imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Qiskit: {e}")
+
+try:
+    import pennylane as qml
+    st.write("Pennylane imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Pennylane: {e}")
+
+try:
+    import tensorflow as tf
+    st.write("TensorFlow imported successfully")
+except ImportError as e:
+    st.write(f"Error importing TensorFlow: {e}")
+
+try:
+    import torch
+    st.write("PyTorch imported successfully")
+except ImportError as e:
+    st.write(f"Error importing PyTorch: {e}")
+
+try:
+    from sklearn import datasets
+    st.write("Scikit-learn imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Scikit-learn: {e}")
+
+try:
+    import numpy as np
+    st.write("Numpy imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Numpy: {e}")
+
+try:
+    import pandas as pd
+    st.write("Pandas imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Pandas: {e}")
+
+try:
+    import matplotlib.pyplot as plt
+    st.write("Matplotlib imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Matplotlib: {e}")
+
+try:
+    from transformers import pipeline
+    st.write("Transformers imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Transformers: {e}")
+
+try:
+    from googleapiclient.discovery import build
+    st.write("Google API Client imported successfully")
+except ImportError as e:
+    st.write(f"Error importing Google API Client: {e}")
 
 # Google API key
 google_api_key = "AIzaSyDbZYI9leHHpNLLTmtaLiLxIxfuFh1c1G0"
