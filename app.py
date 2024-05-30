@@ -53,7 +53,7 @@ def matplotlib_example():
 
 # Transformers Example
 def transformers_example():
-    classifier = pipeline('sentiment-analysis')
+    classifier = pipeline('sentiment-analysis', framework='pt')  # Use PyTorch backend
     result = classifier("We are very happy to show you the 🤗 Transformers library.")
     return result
 
@@ -88,10 +88,4 @@ def main():
     st.write("## Transformers Sentiment Analysis:")
     st.write(transformers_example())
 
-    query = st.text_input("Enter search query for Google API:")
-    if query:
-        st.write("## Google API Custom Search Result:")
-        st.write(google_api_example(query))
-
-if __name__ == "__main__":
-    main()
+    query = st.text_input("Ente
