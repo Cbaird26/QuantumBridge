@@ -1,6 +1,5 @@
 # Necessary imports for running the environment
 import streamlit as st
-import openai
 import qiskit
 from qiskit import IBMQ
 import pennylane as qml
@@ -12,9 +11,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from transformers import pipeline
 from googleapiclient.discovery import build
-
-# OpenAI API key
-openai.api_key = 'YOUR_OPENAI_API_KEY'
 
 # Google API key
 google_api_key = "AIzaSyDbZYI9leHHpNLLTmtaLiLxIxfuFh1c1G0"
@@ -69,15 +65,6 @@ def google_api_example(query):
     res = service.cse().list(q=query, cx='a2064c83ee4164a5e').execute()
     return res
 
-# OpenAI GPT Example
-def openai_example(prompt):
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=100
-    )
-    return response.choices[0].text.strip()
-
 # Theory of Everything Example
 def theory_of_everything_example():
     # Example simulation or formula related to ToE
@@ -116,11 +103,6 @@ def main():
     if query:
         st.write("## Google API Custom Search Result:")
         st.write(google_api_example(query))
-
-    prompt = st.text_input("Enter prompt for OpenAI GPT:")
-    if prompt:
-        st.write("## OpenAI GPT Response:")
-        st.write(openai_example(prompt))
 
     st.write("## Theory of Everything Simulation:")
     formula, result = theory_of_everything_example()
