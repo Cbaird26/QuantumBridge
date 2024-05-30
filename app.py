@@ -88,4 +88,10 @@ def main():
     st.write("## Transformers Sentiment Analysis:")
     st.write(transformers_example())
 
-    query = st.text_input("Ente
+    query = st.text_input("Enter search query for Google API:")
+    if query:
+        st.write("## Google API Custom Search Result:")
+        st.write(google_api_example(query))
+
+if __name__ == "__main__":
+    main()
