@@ -2,7 +2,7 @@
 import streamlit as st
 import qiskit
 from qiskit import Aer, transpile, assemble
-from qiskit.visualization import plot_histogram, matplotlib
+from qiskit.visualization import plot_histogram, circuit_drawer
 import pennylane as qml
 import tensorflow as tf
 import torch
@@ -68,7 +68,13 @@ def main():
         response = chatbot_response(question, context)
         st.write("### Quantum Computation Result:")
         st.write(response["quantum_result"])
-        st.pyplot(response["circuit"].draw(output='mpl'))
+
+        # Check if Matplotlib is available before drawing the circuit
+        try:
+            st.pyplot(response["circuit"].draw(output='mpl'))
+        except qiskit.exceptions.MissingOptionalLibraryError as e:
+            st.write("Matplotlib library is required for drawing the circuit.")
+            st.write(str(e))
         
         st.write("### NLP Model Answer:")
         st.write(response["nlp_answer"])
