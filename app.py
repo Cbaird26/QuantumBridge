@@ -69,11 +69,11 @@ def main():
         st.write("### Quantum Computation Result:")
         st.write(response["quantum_result"])
 
-        # Check if Matplotlib is available before drawing the circuit
+        # Check if Matplotlib and pylatexenc are available before drawing the circuit
         try:
             st.pyplot(response["circuit"].draw(output='mpl'))
-        except qiskit.exceptions.MissingOptionalLibraryError as e:
-            st.write("Matplotlib library is required for drawing the circuit.")
+        except ImportError as e:
+            st.write("The required library for drawing the circuit is missing.")
             st.write(str(e))
         
         st.write("### NLP Model Answer:")
