@@ -1,7 +1,7 @@
 # Necessary imports for running the environment
 import streamlit as st
 import qiskit
-from qiskit import IBMQ, Aer, transpile, assemble
+from qiskit import Aer, transpile, assemble
 from qiskit.visualization import plot_histogram
 import pennylane as qml
 import tensorflow as tf
@@ -11,10 +11,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from googleapiclient.discovery import build
-
-# Initialize Qiskit
-IBMQ.load_account()
-provider = IBMQ.get_provider(hub='ibm-q')
 
 # Load pre-trained NLP model
 model_name = "distilbert-base-uncased-distilled-squad"
@@ -79,8 +75,3 @@ def main():
     
     query = st.text_input("Enter search query for Google API:")
     if query:
-        st.write("## Google API Custom Search Result:")
-        st.write(google_api_example(query))
-
-if __name__ == "__main__":
-    main()
