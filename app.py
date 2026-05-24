@@ -1,4 +1,6 @@
 # Necessary imports for running the environment
+import os
+
 import streamlit as st
 import qiskit
 from qiskit import Aer, transpile, assemble
@@ -18,8 +20,7 @@ nlp_model = AutoModelForQuestionAnswering.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 qa_pipeline = pipeline("question-answering", model=nlp_model, tokenizer=tokenizer)
 
-# Google API key
-google_api_key = "[REDACTED_GOOGLE_API_KEY]"
+google_api_key = os.environ.get("GOOGLE_API_KEY")
 
 # Quantum Computation Example
 def run_quantum_computation():
@@ -36,6 +37,8 @@ def run_quantum_computation():
 
 # Google API Example
 def google_api_example(query):
+    if not google_api_key:
+        raise RuntimeError("GOOGLE_API_KEY is not configured")
     service = build("customsearch", "v1", developerKey=google_api_key)
     res = service.cse().list(q=query, cx='a2064c83ee4164a5e').execute()
     return res
@@ -82,7 +85,10 @@ def main():
     query = st.text_input("Enter search query for Google API:")
     if query:
         st.write("## Google API Custom Search Result:")
-        st.write(google_api_example(query))
+        try:
+            st.write(google_api_example(query))
+        except RuntimeError as error:
+            st.error(str(error))
 
 if __name__ == "__main__":
     main()
